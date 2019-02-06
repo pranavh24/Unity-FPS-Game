@@ -13,7 +13,10 @@ public class Gun : MonoBehaviour {
 
     private float nextTimeToFire = 0f;
 
-	void Update () {
+    public GameObject target;
+    public float targetHealth = 200f; 
+
+    void Update () {
 		if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire) {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
@@ -26,8 +29,12 @@ public class Gun : MonoBehaviour {
 		RaycastHit hit;
 		
 		if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range)) {
-			Debug.Log(hit.transform.name);
+            //Debug.Log(hit.transform.name);
+            if (hit.transform.name == "eyeball") targetHealth--;
+            //Debug.Log(targetHealth);
+            if (targetHealth <= 0) Destroy(target);
 
+            // Target crap
             // Target crap
 
             GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));

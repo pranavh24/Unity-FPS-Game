@@ -73,7 +73,7 @@ namespace SunTemple{
 
 
 
-			if (Mathf.Abs (cam.transform.localRotation.x) > 0.7) {
+			if (Mathf.Abs (cam.transform.localRotation.x) < 0.7) {
 
 				float clamped = 0.7f * Mathf.Sign (cam.transform.localRotation.x); 
 
