@@ -12,6 +12,8 @@ public class EnemyController : MonoBehaviour {
     public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI winText;
     public GameObject playButton;
+
+    
     
 
     public float EnemySpeed = 0.15f;
@@ -38,15 +40,23 @@ public class EnemyController : MonoBehaviour {
 
         if ((int)timeLeft > 0 && !gameLost)
         {
-            timeLeft -= Time.deltaTime;
-            timeText.text = (int) timeLeft + " seconds left";
+            if (!playButton.activeSelf)
+            {
+                timeLeft -= Time.deltaTime;
+                timeText.text = (int)timeLeft + " seconds left";
+            }
+            
         }
         else if(!gameLost)
         {
             // you win
             gameWon = true;
-            winText.gameObject.SetActive(true);
-            playButton.gameObject.SetActive(true);
+            if (!playButton.activeSelf)
+            {
+                winText.gameObject.SetActive(true);
+                playButton.gameObject.SetActive(true);
+            }
+                
         }
         
         
@@ -60,8 +70,11 @@ public class EnemyController : MonoBehaviour {
         {
             // game over
             gameLost = true;
-            gameOverText.gameObject.SetActive(true);
-            playButton.gameObject.SetActive(true);
+            if (!playButton.activeSelf)
+            {
+                gameOverText.gameObject.SetActive(true);
+                playButton.gameObject.SetActive(true);
+            }
         }
     }
 

@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+using UnityScript;
+using UnityEngine.UI;
+using TMPro;
 
 public class Gun : MonoBehaviour {
 
@@ -21,6 +24,13 @@ public class Gun : MonoBehaviour {
 
     public AudioClip gunshotClip;
     public AudioSource gunshotSource;
+
+    public Slider healthBar;
+
+    public TextMeshProUGUI winText;
+    public GameObject playButton;
+
+    private bool gameOver = false;
 
     void Start()
     {
@@ -47,16 +57,17 @@ public class Gun : MonoBehaviour {
             {
                 targetHealth--;
 
-                //Calculate the vector between the object and the player
-                Vector3 dir = target.transform.position - fpsCam.transform.position;
-                //Cancel out the vertical difference
-                //dir.y = 0;
-                //Translate the object in the direction of the vector
-                target.transform.Translate(dir.normalized);
+                float currentHealthPct = (float)targetHealth / (float)200;
+                healthBar.value = 1 - currentHealthPct;
 
             }
-                //Debug.Log(targetHealth);
-            if (targetHealth <= 0) Destroy(target);
+                Debug.Log(targetHealth);
+            if (targetHealth <= 0)
+            {
+                gameOver = true;
+                winText.gameObject.SetActive(true);
+                playButton.gameObject.SetActive(true);
+            }
 
             // Target crap
             // Target crap
@@ -65,4 +76,8 @@ public class Gun : MonoBehaviour {
             Destroy(impactGO, 2f);
 		}	
 	}
+}
+
+public class ScriptB
+{
 }
