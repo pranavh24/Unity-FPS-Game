@@ -14,24 +14,48 @@ public class Gun : MonoBehaviour {
     private float nextTimeToFire = 0f;
 
     public GameObject target;
-    public float targetHealth = 200f; 
+    public float targetHealth = 200f;
+    
+    public float distance = 0.1f;
+    public float pushStrength = 1f;
+
+    public AudioClip gunshotClip;
+    public AudioSource gunshotSource;
+
+    void Start()
+    {
+        gunshotSource.clip = gunshotClip;
+    }
 
     void Update () {
-		if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire) {
+
+        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire) {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
 		}
 	}
 
 	void Shoot() {
+        gunshotSource.Play();
         muzzleFlash.Play();
 
 		RaycastHit hit;
-		
+	    
 		if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range)) {
             //Debug.Log(hit.transform.name);
-            if (hit.transform.name == "eyeball") targetHealth--;
-            //Debug.Log(targetHealth);
+            if (hit.transform.name == "eyeball")
+            {
+                targetHealth--;
+
+                //Calculate the vector between the object and the player
+                Vector3 dir = target.transform.position - fpsCam.transform.position;
+                //Cancel out the vertical difference
+                //dir.y = 0;
+                //Translate the object in the direction of the vector
+                target.transform.Translate(dir.normalized);
+
+            }
+                //Debug.Log(targetHealth);
             if (targetHealth <= 0) Destroy(target);
 
             // Target crap
